@@ -13,33 +13,68 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: const Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                OrderItemDisplay(3, 'BLT'),
-                OrderItemDisplay(5, 'club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                OrderItemDisplay(3, 'BLT'),
-                OrderItemDisplay(5, 'club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                OrderItemDisplay(3, 'BLT'),
-                OrderItemDisplay(5, 'club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                OrderItemDisplay(3, 'BLT'),
-                OrderItemDisplay(5, 'club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                OrderItemDisplay(3, 'BLT'),
-                OrderItemDisplay(5, 'club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey')
-              ],
-            ),
-          ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            // Check screen width
+            if (constraints.maxWidth <= 200) {
+              // 📱 Small screen (phone)
+              return const SingleChildScrollView(
+                child: Column(
+                  children: [
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                  ],
+                ),
+              );
+            } else {
+              // 💻 Large screen (tablet / desktop)
+              return const SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                    OrderItemDisplay(3, 'BLT'),
+                    OrderItemDisplay(5, 'Club'),
+                    OrderItemDisplay(2, 'Veggie'),
+                    OrderItemDisplay(4, 'Turkey'),
+                  ],
+                ),
+              );
+            }
+          },
         ),
       ),
     );
