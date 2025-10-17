@@ -13,16 +13,32 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: const Align(
-          alignment: Alignment.topCenter,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              OrderItemDisplay(3, 'BLT'),
-              OrderItemDisplay(5, 'club'),
-              OrderItemDisplay(2, 'Veggie')
-            ],
+        body: const Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                OrderItemDisplay(3, 'BLT'),
+                OrderItemDisplay(5, 'club'),
+                OrderItemDisplay(2, 'Veggie'),
+                OrderItemDisplay(4, 'Turkey'),
+                OrderItemDisplay(3, 'BLT'),
+                OrderItemDisplay(5, 'club'),
+                OrderItemDisplay(2, 'Veggie'),
+                OrderItemDisplay(4, 'Turkey'),
+                OrderItemDisplay(3, 'BLT'),
+                OrderItemDisplay(5, 'club'),
+                OrderItemDisplay(2, 'Veggie'),
+                OrderItemDisplay(4, 'Turkey'),
+                OrderItemDisplay(3, 'BLT'),
+                OrderItemDisplay(5, 'club'),
+                OrderItemDisplay(2, 'Veggie'),
+                OrderItemDisplay(4, 'Turkey'),
+                OrderItemDisplay(3, 'BLT'),
+                OrderItemDisplay(5, 'club'),
+                OrderItemDisplay(2, 'Veggie'),
+                OrderItemDisplay(4, 'Turkey')
+              ],
+            ),
           ),
         ),
       ),
