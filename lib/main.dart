@@ -13,68 +13,26 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            // Check screen width
-            if (constraints.maxWidth <= 200) {
-              // 📱 Small screen (phone)
-              return const SingleChildScrollView(
-                child: Column(
-                  children: [
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                  ],
-                ),
-              );
-            } else {
-              // 💻 Large screen (tablet / desktop)
-              return const SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                    OrderItemDisplay(3, 'BLT'),
-                    OrderItemDisplay(5, 'Club'),
-                    OrderItemDisplay(2, 'Veggie'),
-                    OrderItemDisplay(4, 'Turkey'),
-                  ],
-                ),
-              );
-            }
-          },
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const OrderItemDisplay(5, 'Footlong'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => print('Add button pressed!'),
+                    child: Text('Add'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => print('Remove button pressed!'),
+                    child: Text('Remove'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -82,18 +40,13 @@ class App extends StatelessWidget {
 }
 
 class OrderItemDisplay extends StatelessWidget {
-  final String itemType;
   final int quantity;
+  final String itemType;
 
   const OrderItemDisplay(this.quantity, this.itemType, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}',
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.green,
-        ));
+    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
   }
 }
