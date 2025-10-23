@@ -29,6 +29,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  String _note = '';
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -55,7 +56,28 @@ class _OrderScreenState extends State<OrderScreen> {
             OrderItemDisplay(
               _quantity,
               'Footlong',
+              note: _note,
             ),
+            const SizedBox(height: 20), // small gap
+            // 2️⃣ TextField for notes
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SizedBox(
+                  width: 300,
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Add a note (e.g., no onions, extra pickles)',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _note = value; // store the user’s note
+                      });
+                    },
+                  ),
+                )),
+
+            const SizedBox(height: 20), // small gap
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,12 +109,24 @@ class _OrderScreenState extends State<OrderScreen> {
 class OrderItemDisplay extends StatelessWidget {
   final int quantity;
   final String itemType;
+  final String note;
 
-  const OrderItemDisplay(this.quantity, this.itemType, {super.key});
+  const OrderItemDisplay(this.quantity, this.itemType,
+      {super.key, this.note = ''});
 
   @override
   Widget build(BuildContext context) {
-    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+    return Column(
+      children: [
+        Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'),
+        if (note.isNotEmpty)
+          Text(
+            'Note: $note',
+            style: const TextStyle(
+                fontStyle: FontStyle.italic, color: Colors.grey),
+          ),
+      ],
+    );
   }
 }
 
