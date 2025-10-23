@@ -57,15 +57,21 @@ class _OrderScreenState extends State<OrderScreen> {
               'Footlong',
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: _increaseQuantity,
-                  child: const Text('Add'),
+                SizedBox(
+                  width: 200,
+                  child: StyledButton(
+                      onPressed: _increaseQuantity,
+                      label: 'Add',
+                      color: Colors.green),
                 ),
-                ElevatedButton(
-                  onPressed: _decreaseQuantity,
-                  child: const Text('Remove'),
+                SizedBox(
+                  width: 200,
+                  child: StyledButton(
+                      onPressed: _decreaseQuantity,
+                      label: 'Remove',
+                      color: Colors.red),
                 ),
               ],
             ),
@@ -85,5 +91,29 @@ class OrderItemDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+  }
+}
+
+class StyledButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String label;
+  final Color color;
+  const StyledButton(
+      {super.key,
+      required this.onPressed,
+      required this.label,
+      this.color = Colors.blue});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textStyle: const TextStyle(fontSize: 18),
+      ),
+      child: Text(label),
+    );
   }
 }
