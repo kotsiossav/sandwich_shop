@@ -30,6 +30,8 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
   String _note = '';
+  String _itemType = 'Footlong';
+  BreadType _selectedBread = BreadType.white;
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -55,8 +57,53 @@ class _OrderScreenState extends State<OrderScreen> {
           children: <Widget>[
             OrderItemDisplay(
               _quantity,
-              'Footlong',
+              _itemType,
+              _selectedBread.name,
               note: _note,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
+                width: 200,
+                child: DropdownButton<String>(
+                  value: _itemType,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _itemType = newValue!;
+                    });
+                  },
+                  items: <String>['Footlong', 'Six-inch']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  isExpanded: true,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
+                width: 200,
+                child: DropdownButton<BreadType>(
+                  value: _selectedBread,
+                  onChanged: (BreadType? newValue) {
+                    setState(() {
+                      _selectedBread = newValue!;
+                    });
+                  },
+                  items: BreadType.values.map((BreadType bread) {
+                    return DropdownMenuItem<BreadType>(
+                      value: bread,
+                      child: Text(bread.name),
+                    );
+                  }).toList(),
+                  isExpanded: true,
+                ),
+              ),
             ),
             const SizedBox(height: 20), // small gap
             // 2️⃣ TextField for notes
@@ -108,17 +155,19 @@ class _OrderScreenState extends State<OrderScreen> {
 
 class OrderItemDisplay extends StatelessWidget {
   final int quantity;
-  final String itemType;
+  final String _itemType;
   final String note;
+  final String breadType;
 
-  const OrderItemDisplay(this.quantity, this.itemType,
+  const OrderItemDisplay(this.quantity, this._itemType, this.breadType,
       {super.key, this.note = ''});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'),
+        Text(
+            '$quantity $_itemType sandwich(es) with $breadType bread: ${'🥪' * quantity}'),
         if (note.isNotEmpty)
           Text(
             'Note: $note',
@@ -152,4 +201,11 @@ class StyledButton extends StatelessWidget {
       child: Text(label),
     );
   }
+}
+
+enum BreadType {
+  white,
+  wholeWheat,
+  multigrain,
+  sourdough,
 }
