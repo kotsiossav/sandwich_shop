@@ -168,4 +168,29 @@ void main() {
       expect(find.text('Note: Lots of lettuce'), findsOneWidget);
     });
   });
+
+  group('OrderScreen - Switch', () {
+    testWidgets('toggles between six-inch and footlong',
+        (WidgetTester tester) async {
+      // Load the app
+      await tester.pumpWidget(const App());
+
+      // Verify initial state is 'footlong'
+      expect(find.textContaining('footlong'), findsWidgets);
+
+      // Toggle switch to change to 'six-inch'
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+
+      // Verify state changes to 'six-inch'
+      expect(find.textContaining('six-inch'), findsWidgets);
+
+      // Toggle switch back to change to 'footlong'
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+
+      // Verify state returns to 'footlong'
+      expect(find.textContaining('footlong'), findsWidgets);
+    });
+  });
 }
