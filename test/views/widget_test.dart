@@ -169,28 +169,34 @@ void main() {
     });
   });
 
-  group('OrderScreen - Switch', () {
-    testWidgets('toggles between six-inch and footlong',
+  group('OrderScreen - Switches', () {
+    testWidgets('toggles between six-inch and footlong, and toasted states',
         (WidgetTester tester) async {
-      // Load the app
       await tester.pumpWidget(const App());
 
-      // Verify initial state is 'footlong'
+      // --- Check initial states ---
       expect(find.textContaining('footlong'), findsWidgets);
+      expect(find.textContaining('untoasted'), findsWidgets);
 
-      // Toggle switch to change to 'six-inch'
-      await tester.tap(find.byType(Switch));
+      // --- Toggle size switch ---
+      await tester.tap(find.byKey(const Key('size_switch')));
       await tester.pumpAndSettle();
 
-      // Verify state changes to 'six-inch'
       expect(find.textContaining('six-inch'), findsWidgets);
 
-      // Toggle switch back to change to 'footlong'
-      await tester.tap(find.byType(Switch));
+      // --- Toggle toasted switch ---
+      await tester.tap(find.byKey(const Key('toasted_switch')));
       await tester.pumpAndSettle();
 
-      // Verify state returns to 'footlong'
+      expect(find.textContaining('toasted'), findsWidgets);
+
+      // --- Toggle both back ---
+      await tester.tap(find.byKey(const Key('size_switch')));
+      await tester.tap(find.byKey(const Key('toasted_switch')));
+      await tester.pumpAndSettle();
+
       expect(find.textContaining('footlong'), findsWidgets);
+      expect(find.textContaining('untoasted'), findsWidgets);
     });
   });
 }
