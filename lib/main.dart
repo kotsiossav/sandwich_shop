@@ -37,6 +37,8 @@ class _OrderScreenState extends State<OrderScreen> {
   bool _isFootlong = true;
   BreadType _selectedBreadType = BreadType.white;
   bool _isToasted = false;
+  final PricingRepository _pricingRepository = const PricingRepository();
+  double _totalPrice = 0.0;
 
   @override
   void initState() {
@@ -44,6 +46,16 @@ class _OrderScreenState extends State<OrderScreen> {
     _orderRepository = OrderRepository(maxQuantity: widget.maxQuantity);
     _notesController.addListener(() {
       setState(() {});
+    });
+    _updateTotalPrice();
+  }
+
+  void _updateTotalPrice() {
+    setState(() {
+      _totalPrice = _pricingRepository.total(
+        quantity: _orderRepository.quantity,
+        isFootlong: _isFootlong,
+      );
     });
   }
 
@@ -55,20 +67,31 @@ class _OrderScreenState extends State<OrderScreen> {
 
   VoidCallback? _getIncreaseCallback() {
     if (_orderRepository.canIncrement) {
-      return () => setState(_orderRepository.increment);
+      return () {
+        setState(() {
+          _orderRepository.increment();
+        });
+        _updateTotalPrice();
+      };
     }
     return null;
   }
 
   VoidCallback? _getDecreaseCallback() {
     if (_orderRepository.canDecrement) {
-      return () => setState(_orderRepository.decrement);
+      return () {
+        setState(() {
+          _orderRepository.decrement();
+        });
+        _updateTotalPrice();
+      };
     }
     return null;
   }
 
   void _onSandwichTypeChanged(bool value) {
     setState(() => _isFootlong = value);
+    _updateTotalPrice();
   }
 
   void _onBreadTypeSelected(BreadType? value) {
@@ -121,6 +144,10 @@ class _OrderScreenState extends State<OrderScreen> {
               orderNote: noteForDisplay,
             ),
             const SizedBox(height: 20),
+            Text(
+              'Total: £${_totalPrice.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

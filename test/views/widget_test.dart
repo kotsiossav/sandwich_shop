@@ -199,4 +199,42 @@ void main() {
       expect(find.textContaining('untoasted'), findsWidgets);
     });
   });
+
+  group('OrderScreen - Price Calculation', () {
+    testWidgets('updates total price when quantity or sandwich type changes',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+
+      // --- Check initial total ---
+      expect(find.textContaining('Total: £0.00'), findsOneWidget);
+
+      // --- Add one sandwich ---
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
+      await tester.pumpAndSettle();
+
+      // Footlong default price: £11 × 1 = £11.00
+      expect(find.textContaining('Total: £11.00'), findsOneWidget);
+
+      // --- Add a second sandwich ---
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
+      await tester.pumpAndSettle();
+
+      // £11 × 2 = £22.00
+      expect(find.textContaining('Total: £22.00'), findsOneWidget);
+
+      // --- Switch to six-inch ---
+      await tester.tap(find.byKey(const Key('size_switch')));
+      await tester.pumpAndSettle();
+
+      // £7 × 2 = £14.00
+      expect(find.textContaining('Total: £14.00'), findsOneWidget);
+
+      // --- Remove one sandwich ---
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Remove'));
+      await tester.pumpAndSettle();
+
+      // £7 × 1 = £7.00
+      expect(find.textContaining('Total: £7.00'), findsOneWidget);
+    });
+  });
 }
