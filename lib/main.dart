@@ -65,16 +65,19 @@ class _OrderScreenState extends State<OrderScreen> {
         _cart.add(sandwich, quantity: _quantity);
       });
 
-      String sizeText;
-      if (_isFootlong) {
-        sizeText = 'footlong';
-      } else {
-        sizeText = 'six-inch';
-      }
+      String sizeText = _isFootlong ? 'footlong' : 'six-inch';
       String confirmationMessage =
           'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart';
 
-      debugPrint(confirmationMessage);
+      // Display message as a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(confirmationMessage),
+          duration: const Duration(seconds: 2), // how long it shows
+          behavior: SnackBarBehavior
+              .floating, // optional, makes it float above bottom
+        ),
+      );
     }
   }
 
@@ -215,6 +218,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
               const SizedBox(height: 20),
               DropdownMenu<BreadType>(
+                key: const Key('bread_dropdown'),
                 width: double.infinity,
                 label: const Text('Bread Type'),
                 textStyle: normalText,
