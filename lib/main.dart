@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/repositories/order_repository.dart';
+import 'package:sandwich_shop/repositories/pricing_repository.dart';
 
 enum BreadType { white, wheat, wholemeal }
 
@@ -36,26 +37,15 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _notesController = TextEditingController();
   bool _isFootlong = true;
   BreadType _selectedBreadType = BreadType.white;
-  bool _isToasted = false;
-  final PricingRepository _pricingRepository = const PricingRepository();
-  double _totalPrice = 0.0;
+  late final PricingRepository _pricingRepository;
 
   @override
   void initState() {
     super.initState();
     _orderRepository = OrderRepository(maxQuantity: widget.maxQuantity);
+    _pricingRepository = PricingRepository();
     _notesController.addListener(() {
       setState(() {});
-    });
-    _updateTotalPrice();
-  }
-
-  void _updateTotalPrice() {
-    setState(() {
-      _totalPrice = _pricingRepository.total(
-        quantity: _orderRepository.quantity,
-        isFootlong: _isFootlong,
-      );
     });
   }
 
@@ -67,31 +57,20 @@ class _OrderScreenState extends State<OrderScreen> {
 
   VoidCallback? _getIncreaseCallback() {
     if (_orderRepository.canIncrement) {
-      return () {
-        setState(() {
-          _orderRepository.increment();
-        });
-        _updateTotalPrice();
-      };
+      return () => setState(_orderRepository.increment);
     }
     return null;
   }
 
   VoidCallback? _getDecreaseCallback() {
     if (_orderRepository.canDecrement) {
-      return () {
-        setState(() {
-          _orderRepository.decrement();
-        });
-        _updateTotalPrice();
-      };
+      return () => setState(_orderRepository.decrement);
     }
     return null;
   }
 
   void _onSandwichTypeChanged(bool value) {
     setState(() => _isFootlong = value);
-    _updateTotalPrice();
   }
 
   void _onBreadTypeSelected(BreadType? value) {
@@ -114,6 +93,11 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double totalPrice = _pricingRepository.calculatePrice(
+      quantity: _orderRepository.quantity,
+      isFootlong: _isFootlong,
+    );
+
     String sandwichType = 'footlong';
     if (!_isFootlong) {
       sandwichType = 'six-inch';
@@ -145,33 +129,19 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Total: £${_totalPrice.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Total Price: £${totalPrice.toStringAsFixed(2)}',
+              style: heading2,
             ),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('six-inch', style: normalText),
                 Switch(
-                  key: const Key('size_switch'),
                   value: _isFootlong,
                   onChanged: _onSandwichTypeChanged,
                 ),
                 const Text('footlong', style: normalText),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('untoasted', style: normalText),
-                Switch(
-                  key: const Key('toasted_switch'),
-                  value: _isToasted,
-                  onChanged: (value) {
-                    setState(() => _isToasted = value);
-                  },
-                ),
-                const Text('toasted', style: normalText),
               ],
             ),
             const SizedBox(height: 10),

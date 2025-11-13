@@ -21,24 +21,3 @@ class OrderRepository {
     }
   }
 }
-
-class PricingRepository {
-  final double sixInchPrice;
-  final double footlongPrice;
-
-  const PricingRepository({
-    this.sixInchPrice = 7.0, // £7 for six-inch
-    this.footlongPrice = 11.0, // £11 for footlong
-  });
-
-  double unitPrice({required bool isFootlong}) =>
-      isFootlong ? footlongPrice : sixInchPrice;
-
-  double total({
-    required int quantity,
-    required bool isFootlong,
-  }) {
-    if (quantity <= 0) return 0.0;
-    return unitPrice(isFootlong: isFootlong) * quantity;
-  }
-}
