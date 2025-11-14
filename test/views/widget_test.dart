@@ -162,4 +162,91 @@ void main() {
     // Look for something like "Items: 2"
     expect(find.textContaining('2'), findsWidgets);
   });
+
+  //Tests for the cart summary updates after adding items with different bread types
+  testWidgets('Cart summary initially shows 0 items and £0.00', (tester) async {
+    await pumpWithLargeScreen(
+      tester,
+      const MaterialApp(home: OrderScreen(maxQuantity: 10)),
+    );
+
+    expect(find.text('Items: 0'), findsOneWidget);
+    expect(find.text('Total: £0.00'), findsOneWidget);
+  });
+
+  testWidgets('Adding items updates cart summary', (tester) async {
+    await pumpWithLargeScreen(
+      tester,
+      const MaterialApp(home: OrderScreen(maxQuantity: 10)),
+    );
+
+    final addButton = find.text('Add to Cart');
+
+    // Add 1 default (Veggie Delight footlong)
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Items: 1'), findsOneWidget);
+  });
+
+  testWidgets('Cart summary reflects multiple quantity added', (tester) async {
+    await pumpWithLargeScreen(
+      tester,
+      const MaterialApp(home: OrderScreen(maxQuantity: 10)),
+    );
+
+    final addButton = find.text('Add to Cart');
+    final plusButton = find.widgetWithIcon(IconButton, Icons.add);
+
+    // Increase quantity from 1 to 3
+    await tester.tap(plusButton);
+    await tester.tap(plusButton);
+    await tester.pump();
+
+    // Add 3 items
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Items: 3'), findsOneWidget);
+  });
+
+  testWidgets('Cart summary accumulates quantity when added twice',
+      (tester) async {
+    await pumpWithLargeScreen(
+      tester,
+      const MaterialApp(home: OrderScreen(maxQuantity: 10)),
+    );
+
+    final addButton = find.text('Add to Cart');
+
+    // Add first item
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    // Add second item
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Items: 2'), findsOneWidget);
+  });
+
+  testWidgets('Total price increases when items added', (tester) async {
+    await pumpWithLargeScreen(
+      tester,
+      const MaterialApp(home: OrderScreen(maxQuantity: 10)),
+    );
+
+    final addButton = find.text('Add to Cart');
+
+    // Capture initial total
+    final initialTotal = find.textContaining('Total: £0.00');
+    expect(initialTotal, findsOneWidget);
+
+    // Add one item
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    // New total must NOT be 0.00
+    expect(find.text('Total: £0.00'), findsNothing);
+  });
 }
