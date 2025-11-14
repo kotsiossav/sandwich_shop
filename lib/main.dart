@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Sandwich Shop App',
-      home: OrderScreen(maxQuantity: 5),
+      home: OrderScreen(maxQuantity: 10),
     );
   }
 }
@@ -33,6 +33,8 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   final Cart _cart = Cart();
   final TextEditingController _notesController = TextEditingController();
+  int cartItemCount = 0;
+  double cartTotalPrice = 0.0;
 
   SandwichType _selectedSandwichType = SandwichType.veggieDelight;
   bool _isFootlong = true;
@@ -146,9 +148,11 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void _increaseQuantity() {
-    setState(() {
-      _quantity++;
-    });
+    if (_quantity < widget.maxQuantity) {
+      setState(() {
+        _quantity++;
+      });
+    }
   }
 
   void _decreaseQuantity() {
@@ -237,7 +241,9 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   Text('$_quantity', style: heading2),
                   IconButton(
-                    onPressed: _increaseQuantity,
+                    onPressed: _quantity < widget.maxQuantity
+                        ? _increaseQuantity
+                        : null,
                     icon: const Icon(Icons.add),
                   ),
                 ],
