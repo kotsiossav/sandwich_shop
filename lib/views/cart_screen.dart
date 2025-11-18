@@ -67,9 +67,46 @@ class _CartScreenState extends State<CartScreen> {
                       '${_getSizeText(entry.key.isFootlong)} on ${entry.key.breadType.name} bread',
                       style: normalText,
                     ),
-                    Text(
-                      'Qty: ${entry.value} - £${_getItemPrice(entry.key, entry.value).toStringAsFixed(2)}',
-                      style: normalText,
+                    const SizedBox(height: 8),
+                    // Quantity controls row: label + - buttons and line price
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Quantity controls
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  // Decrease quantity by 1. Cart.remove will
+                                  // delete the item entirely if it reaches 0.
+                                  widget.cart.remove(entry.key);
+                                });
+                              },
+                            ),
+                            Text(
+                              'Qty: ${entry.value}',
+                              style: normalText,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  // Increase quantity by 1
+                                  widget.cart.add(entry.key);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 16),
+                        // Line item price
+                        Text(
+                          '£${_getItemPrice(entry.key, entry.value).toStringAsFixed(2)}',
+                          style: normalText,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                   ],
