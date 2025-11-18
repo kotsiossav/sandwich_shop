@@ -4,6 +4,7 @@ import 'package:sandwich_shop/views/cart_screen.dart';
 import 'package:sandwich_shop/views/order_screen.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
+import 'package:sandwich_shop/views/app_styles.dart';
 
 void main() {
   group('CartScreen', () {
@@ -41,7 +42,9 @@ void main() {
       expect(find.text('Cart View'), findsOneWidget);
       expect(find.text('Veggie Delight'), findsOneWidget);
       expect(find.text('Footlong on white bread'), findsOneWidget);
-      expect(find.text('Qty: 2 - £22.00'), findsOneWidget);
+      // New UI: quantity and line price are rendered separately
+      expect(find.text('Qty: 2'), findsOneWidget);
+      expect(find.text('£22.00'), findsOneWidget);
       expect(find.text('Total: £22.00'), findsOneWidget);
     });
 
@@ -72,8 +75,15 @@ void main() {
       expect(find.text('Chicken Teriyaki'), findsOneWidget);
       expect(find.text('Footlong on white bread'), findsOneWidget);
       expect(find.text('Six-inch on wheat bread'), findsOneWidget);
-      expect(find.text('Qty: 1 - £11.00'), findsOneWidget);
-      expect(find.text('Qty: 3 - £21.00'), findsOneWidget);
+
+      // First item: qty 1, price 11
+      expect(find.text('Qty: 1'), findsWidgets);
+      expect(find.text('£11.00'), findsOneWidget);
+
+      // Second item: qty 3, price 21
+      expect(find.text('Qty: 3'), findsWidgets);
+      expect(find.text('£21.00'), findsOneWidget);
+
       expect(find.text('Total: £32.00'), findsOneWidget);
     });
 
@@ -135,8 +145,81 @@ void main() {
 
       await tester.pumpWidget(app);
 
-      expect(find.text('Qty: 3 - £33.00'), findsOneWidget);
+      expect(find.text('Qty: 3'), findsOneWidget);
+      expect(find.text('£33.00'), findsOneWidget);
       expect(find.text('Total: £33.00'), findsOneWidget);
+    });
+
+    testWidgets('tapping + increases quantity and updates prices',
+        (WidgetTester tester) async {
+      final Cart cart = Cart();
+      final Sandwich sandwich = Sandwich(
+        type: SandwichType.veggieDelight,
+        isFootlong: true,
+        breadType: BreadType.white,
+      );
+      cart.add(sandwich, quantity: 1);
+
+      final CartScreen cartScreen = CartScreen(cart: cart);
+      final MaterialApp app = MaterialApp(
+        home: cartScreen,
+      );
+
+      await tester.pumpWidget(app);
+
+      // Initial state
+      expect(find.text('Qty: 1'), findsOneWidget);
+      expect(find.text('£11.00'), findsOneWidget);
+      expect(find.text('Total: £11.00'), findsOneWidget);
+
+      // Tap the + icon
+      final plusButtonFinder = find.byIcon(Icons.add).first;
+      await tester.tap(plusButtonFinder);
+      await tester.pumpAndSettle();
+
+      // After increment: quantity 2, line 22, total 22
+      expect(find.text('Qty: 2'), findsOneWidget);
+      expect(find.text('£22.00'), findsOneWidget);
+      expect(find.text('Total: £22.00'), findsOneWidget);
+    });
+
+    testWidgets('tapping - decreases quantity and can remove item',
+        (WidgetTester tester) async {
+      final Cart cart = Cart();
+      final Sandwich sandwich = Sandwich(
+        type: SandwichType.veggieDelight,
+        isFootlong: true,
+        breadType: BreadType.white,
+      );
+      cart.add(sandwich, quantity: 2);
+
+      final CartScreen cartScreen = CartScreen(cart: cart);
+      final MaterialApp app = MaterialApp(
+        home: cartScreen,
+      );
+
+      await tester.pumpWidget(app);
+
+      // Initial state
+      expect(find.text('Qty: 2'), findsOneWidget);
+      expect(find.text('£22.00'), findsOneWidget);
+      expect(find.text('Total: £22.00'), findsOneWidget);
+
+      final minusButtonFinder = find.byIcon(Icons.remove).first;
+
+      // First tap: 2 -> 1
+      await tester.tap(minusButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text('Qty: 1'), findsOneWidget);
+      expect(find.text('£11.00'), findsOneWidget);
+      expect(find.text('Total: £11.00'), findsOneWidget);
+
+      // Second tap: 1 -> 0 => item removed from cart
+      await tester.tap(minusButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text('Veggie Delight'), findsNothing);
+      expect(find.text('Qty:'), findsNothing);
+      expect(find.text('Total: £0.00'), findsOneWidget);
     });
   });
 }
