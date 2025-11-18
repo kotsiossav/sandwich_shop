@@ -3,6 +3,7 @@ import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/views/cart_screen.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
+import 'package:sandwich_shop/views/profile_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
@@ -135,106 +136,123 @@ class _OrderScreenState extends State<OrderScreen> {
           style: heading1,
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 300,
-                child: Image.asset(
-                  _getCurrentImagePath(),
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Text(
-                        'Image not found',
-                        style: normalText,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 300,
+                    child: Image.asset(
+                      _getCurrentImagePath(),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Text(
+                            'Image not found',
+                            style: normalText,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  DropdownMenu<SandwichType>(
+                    width: double.infinity,
+                    label: const Text('Sandwich Type'),
+                    textStyle: normalText,
+                    initialSelection: _selectedSandwichType,
+                    onSelected: (SandwichType? value) {
+                      if (value != null) {
+                        setState(() => _selectedSandwichType = value);
+                      }
+                    },
+                    dropdownMenuEntries: _buildSandwichTypeEntries(),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Six-inch', style: normalText),
+                      Switch(
+                        value: _isFootlong,
+                        onChanged: (value) =>
+                            setState(() => _isFootlong = value),
                       ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              DropdownMenu<SandwichType>(
-                width: double.infinity,
-                label: const Text('Sandwich Type'),
-                textStyle: normalText,
-                initialSelection: _selectedSandwichType,
-                onSelected: (SandwichType? value) {
-                  if (value != null) {
-                    setState(() => _selectedSandwichType = value);
-                  }
-                },
-                dropdownMenuEntries: _buildSandwichTypeEntries(),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Six-inch', style: normalText),
-                  Switch(
-                    value: _isFootlong,
-                    onChanged: (value) => setState(() => _isFootlong = value),
+                      const Text('Footlong', style: normalText),
+                    ],
                   ),
-                  const Text('Footlong', style: normalText),
+                  const SizedBox(height: 20),
+                  DropdownMenu<BreadType>(
+                    width: double.infinity,
+                    label: const Text('Bread Type'),
+                    textStyle: normalText,
+                    initialSelection: _selectedBreadType,
+                    onSelected: (BreadType? value) {
+                      if (value != null) {
+                        setState(() => _selectedBreadType = value);
+                      }
+                    },
+                    dropdownMenuEntries: _buildBreadTypeEntries(),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Quantity: ', style: normalText),
+                      IconButton(
+                        onPressed: _quantity > 0
+                            ? () => setState(() => _quantity--)
+                            : null,
+                        icon: const Icon(Icons.remove),
+                      ),
+                      Text('$_quantity', style: heading2),
+                      IconButton(
+                        onPressed: () => setState(() => _quantity++),
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  StyledButton(
+                    onPressed: _getAddToCartCallback(),
+                    icon: Icons.add_shopping_cart,
+                    label: 'Add to Cart',
+                    backgroundColor: Colors.green,
+                  ),
+                  const SizedBox(height: 20),
+                  StyledButton(
+                    onPressed: _navigateToCartView,
+                    icon: Icons.shopping_cart,
+                    label: 'View Cart',
+                    backgroundColor: Colors.blue,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Cart: ${_cart.countOfItems} items - £${_cart.totalPrice.toStringAsFixed(2)}',
+                    style: normalText,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
-              const SizedBox(height: 20),
-              DropdownMenu<BreadType>(
-                width: double.infinity,
-                label: const Text('Bread Type'),
-                textStyle: normalText,
-                initialSelection: _selectedBreadType,
-                onSelected: (BreadType? value) {
-                  if (value != null) {
-                    setState(() => _selectedBreadType = value);
-                  }
-                },
-                dropdownMenuEntries: _buildBreadTypeEntries(),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Quantity: ', style: normalText),
-                  IconButton(
-                    onPressed: _quantity > 0
-                        ? () => setState(() => _quantity--)
-                        : null,
-                    icon: const Icon(Icons.remove),
-                  ),
-                  Text('$_quantity', style: heading2),
-                  IconButton(
-                    onPressed: () => setState(() => _quantity++),
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              StyledButton(
-                onPressed: _getAddToCartCallback(),
-                icon: Icons.add_shopping_cart,
-                label: 'Add to Cart',
-                backgroundColor: Colors.green,
-              ),
-              const SizedBox(height: 20),
-              StyledButton(
-                onPressed: _navigateToCartView,
-                icon: Icons.shopping_cart,
-                label: 'View Cart',
-                backgroundColor: Colors.blue,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Cart: ${_cart.countOfItems} items - £${_cart.totalPrice.toStringAsFixed(2)}',
-                style: normalText,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-            ],
+            ),
           ),
-        ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
+            child: const Text('Profile / Sign In'),
+          ),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }
