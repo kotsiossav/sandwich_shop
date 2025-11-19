@@ -4,6 +4,8 @@ import 'package:sandwich_shop/views/cart_screen.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 import 'package:sandwich_shop/views/profile_screen.dart';
+import 'package:sandwich_shop/navigation/app_scaffold.dart';
+import 'package:sandwich_shop/navigation/app_navigation.dart';
 
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
@@ -122,20 +124,9 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 100,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-        ),
-        title: const Text(
-          'Sandwich Counter',
-          style: heading1,
-        ),
-      ),
+    return AppScaffold(
+      title: 'Sandwich Counter',
+      currentDestination: AppDestination.order,
       body: Column(
         children: [
           Expanded(
@@ -162,13 +153,6 @@ class _OrderScreenState extends State<OrderScreen> {
                   DropdownMenu<SandwichType>(
                     width: double.infinity,
                     label: const Text('Sandwich Type'),
-                    textStyle: normalText,
-                    initialSelection: _selectedSandwichType,
-                    onSelected: (SandwichType? value) {
-                      if (value != null) {
-                        setState(() => _selectedSandwichType = value);
-                      }
-                    },
                     dropdownMenuEntries: _buildSandwichTypeEntries(),
                   ),
                   const SizedBox(height: 20),

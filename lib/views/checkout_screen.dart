@@ -21,31 +21,42 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       _isProcessing = true;
     });
 
-    // A fake delay to simulate payment processing
+    // Simulate payment delay
     await Future.delayed(const Duration(seconds: 2));
 
     final DateTime currentTime = DateTime.now();
     final int timestamp = currentTime.millisecondsSinceEpoch;
     final String orderId = 'ORD$timestamp';
 
-    final Map orderConfirmation = {
+    final Map<String, Object> orderConfirmation = {
       'orderId': orderId,
       'totalAmount': widget.cart.totalPrice,
       'itemCount': widget.cart.countOfItems,
       'estimatedTime': '15-20 minutes',
     };
 
-    // Check if this State object is being shown in the widget tree
-    if (mounted) {
-      // Pop the checkout screen and return to the order screen with the confirmation
-      Navigator.pop(context, orderConfirmation);
-    }
+    if (!mounted) return;
+
+    // Optional: reset flag (not really visible, we're leaving the screen)
+    setState(() {
+      _isProcessing = false;
+    });
+
+    // *** This is the important line: always go to /order and clear back stack ***
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/order',
+      (route) => false,
+    );
+
+    // If you need orderConfirmation later, store it in shared state.
   }
 
   double _calculateItemPrice(Sandwich sandwich, int quantity) {
     PricingRepository repo = PricingRepository();
     return repo.calculatePrice(
-        quantity: quantity, isFootlong: sandwich.isFootlong);
+      quantity: quantity,
+      isFootlong: sandwich.isFootlong,
+    );
   }
 
   @override
@@ -120,7 +131,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     } else {
       columnChildren.add(
         ElevatedButton(
-          onPressed: _processPayment,
+          onPressed: _isProcessing ? null : _processPayment,
           child: const Text('Confirm Payment', style: normalText),
         ),
       );

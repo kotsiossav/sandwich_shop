@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
+import 'package:sandwich_shop/navigation/app_scaffold.dart';
+import 'package:sandwich_shop/navigation/app_navigation.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -9,14 +11,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Simple controllers for local, in-memory form state
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    // Clean up controllers
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -24,7 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _onSavePressed() {
-    // Subtask 5: simple feedback only, no persistence/auth
     final String name = _nameController.text.trim();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -40,13 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-          style: heading1,
-        ),
-      ),
+    return AppScaffold(
+      title: 'Profile',
+      currentDestination: AppDestination.profile,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
