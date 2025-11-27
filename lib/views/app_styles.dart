@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+const TextStyle normalText = TextStyle(
+  fontSize: 16,
+);
+
+const heading1 = TextStyle(
+  fontSize: 24,
+  fontWeight: FontWeight.bold,
+);
+
+const heading2 = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
 
 class AppStyles {
   static double _baseFontSize = 16.0;
@@ -29,7 +44,3 @@ class AppStyles {
         fontWeight: FontWeight.bold,
       );
 }
-
-TextStyle get normalText => AppStyles.normalText;
-TextStyle get heading1 => AppStyles.heading1;
-TextStyle get heading2 => AppStyles.heading2;
