@@ -5,12 +5,19 @@ import 'package:sandwich_shop/views/order_screen.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-runApp(const App());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // 🔥 Make sure there is always a logged-in user
+  await FirebaseAuth.instance.signInAnonymously();
+
+  runApp(const App());
 }
 
 class App extends StatelessWidget {

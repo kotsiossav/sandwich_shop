@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/widgets/common_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,20 +24,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
-  void _saveProfile() {
-    final String name = _nameController.text.trim();
-    final String location = _locationController.text.trim();
+  Future<void> _saveProfile() async {
+  final String name = _nameController.text.trim();
+  final String location = _locationController.text.trim();
 
-    final bool nameIsNotEmpty = name.isNotEmpty;
-    final bool locationIsNotEmpty = location.isNotEmpty;
-    final bool bothFieldsFilled = nameIsNotEmpty && locationIsNotEmpty;
-
-    if (bothFieldsFilled) {
-      _returnProfileData(name, location);
-    } else {
-      _showValidationError();
-    }
+  if (name.isEmpty || location.isEmpty) {
+    _showValidationError();
+    return;
   }
+
+  try {
+    final String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'name': name,
+      'location': location,
+      'updated_at': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile saved')),
+    );
+
+    _returnProfileData(name, location);
+
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to save profile: $e')),
+    );
+  }
+}
 
   void _returnProfileData(String name, String location) {
     final Map<String, String> profileData = {

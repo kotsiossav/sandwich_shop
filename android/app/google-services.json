@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "369159641956",
-    "project_id": "union-shop-edb12",
-    "storage_bucket": "union-shop-edb12.firebasestorage.app"
+    "project_number": "31597212976",
+    "firebase_url": "https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sandwich-shop-bba8f",
+    "storage_bucket": "sandwich-shop-bba8f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:369159641956:android:970cb9e834246d17ef7871",
+        "mobilesdk_app_id": "1:31597212976:android:0837d95f0c975043c844f5",
         "android_client_info": {
           "package_name": "com.example.sandwich_shop"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAJ6Z_e9g_eM45I7XA8G8tTFIqWuLpfmno"
+          "current_key": "AIzaSyCWUxLXvCOnfTOFim-Kp_eHwdpo-aXysXE"
         }
       ],
       "services": {

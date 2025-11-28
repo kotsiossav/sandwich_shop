@@ -41,49 +41,54 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB-o26IR-MBD3OLFhbn8Abw_-PmViWUoFg',
-    appId: '1:369159641956:web:a558e488ddd2d3aaef7871',
-    messagingSenderId: '369159641956',
-    projectId: 'union-shop-edb12',
-    authDomain: 'union-shop-edb12.firebaseapp.com',
-    storageBucket: 'union-shop-edb12.firebasestorage.app',
-    measurementId: 'G-5WHFS66LCL',
+    apiKey: 'AIzaSyAR1FrKooBu4Gp7nwMMepntlzckC5RBjdI',
+    appId: '1:31597212976:web:54d5716fadf7ad78c844f5',
+    messagingSenderId: '31597212976',
+    projectId: 'sandwich-shop-bba8f',
+    authDomain: 'sandwich-shop-bba8f.firebaseapp.com',
+    databaseURL: 'https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'sandwich-shop-bba8f.firebasestorage.app',
+    measurementId: 'G-M40Q0FWKMY',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAJ6Z_e9g_eM45I7XA8G8tTFIqWuLpfmno',
-    appId: '1:369159641956:android:970cb9e834246d17ef7871',
-    messagingSenderId: '369159641956',
-    projectId: 'union-shop-edb12',
-    storageBucket: 'union-shop-edb12.firebasestorage.app',
+    apiKey: 'AIzaSyCWUxLXvCOnfTOFim-Kp_eHwdpo-aXysXE',
+    appId: '1:31597212976:android:0837d95f0c975043c844f5',
+    messagingSenderId: '31597212976',
+    projectId: 'sandwich-shop-bba8f',
+    databaseURL: 'https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'sandwich-shop-bba8f.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBsh_YdqkVtQ-834qIe4VFjpFRnElrAeDs',
-    appId: '1:369159641956:ios:d7bffd29bffe576def7871',
-    messagingSenderId: '369159641956',
-    projectId: 'union-shop-edb12',
-    storageBucket: 'union-shop-edb12.firebasestorage.app',
+    apiKey: 'AIzaSyBe9UkR8QPxQls-_Sbqj9njTT3OxlwLlDM',
+    appId: '1:31597212976:ios:968dfe6957fcec79c844f5',
+    messagingSenderId: '31597212976',
+    projectId: 'sandwich-shop-bba8f',
+    databaseURL: 'https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'sandwich-shop-bba8f.firebasestorage.app',
     iosBundleId: 'com.example.sandwichShop',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBsh_YdqkVtQ-834qIe4VFjpFRnElrAeDs',
-    appId: '1:369159641956:ios:d7bffd29bffe576def7871',
-    messagingSenderId: '369159641956',
-    projectId: 'union-shop-edb12',
-    storageBucket: 'union-shop-edb12.firebasestorage.app',
+    apiKey: 'AIzaSyBe9UkR8QPxQls-_Sbqj9njTT3OxlwLlDM',
+    appId: '1:31597212976:ios:968dfe6957fcec79c844f5',
+    messagingSenderId: '31597212976',
+    projectId: 'sandwich-shop-bba8f',
+    databaseURL: 'https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'sandwich-shop-bba8f.firebasestorage.app',
     iosBundleId: 'com.example.sandwichShop',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyB-o26IR-MBD3OLFhbn8Abw_-PmViWUoFg',
-    appId: '1:369159641956:web:8700763afcca18beef7871',
-    messagingSenderId: '369159641956',
-    projectId: 'union-shop-edb12',
-    authDomain: 'union-shop-edb12.firebaseapp.com',
-    storageBucket: 'union-shop-edb12.firebasestorage.app',
-    measurementId: 'G-2X6V5Y5C3F',
+    apiKey: 'AIzaSyAR1FrKooBu4Gp7nwMMepntlzckC5RBjdI',
+    appId: '1:31597212976:web:172b2a51e89bbc29c844f5',
+    messagingSenderId: '31597212976',
+    projectId: 'sandwich-shop-bba8f',
+    authDomain: 'sandwich-shop-bba8f.firebaseapp.com',
+    databaseURL: 'https://sandwich-shop-bba8f-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'sandwich-shop-bba8f.firebasestorage.app',
+    measurementId: 'G-N5R8X8LRQW',
   );
 
 }
