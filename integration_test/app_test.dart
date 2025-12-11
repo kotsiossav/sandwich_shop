@@ -85,6 +85,9 @@ void main() {
       // The + button should be the first one (before the cart + button)
       final quantityAddButton = addButtons.first;
 
+      await tester.ensureVisible(quantityAddButton);
+      await tester.pumpAndSettle();
+
       await tester.tap(quantityAddButton);
       await tester.pumpAndSettle();
       await tester.tap(quantityAddButton);
